@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/4.0.3/babylon.js"></script>
+		<link type="text/css" rel="stylesheet" href="css/viewer.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/@millicast/sdk@latest/dist/millicast.umd.js'></script>
+
+
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <video id="video" disablePictureInPicture controlsList="nodownload" playsinline controls autoplay muted  ></video>
+    <audio id="audio"  playsinline autoplay  ></audio>
+    <source id="source" src="" type="audio/ogg"/>
+    </audio>
+     <button id="audioBtn" class="btn-audio"  onClick="toggleMute()" type="button"></button>
+     <script src="js/viewer.js"></script>
+     <script src="js/omnitone.js"></script>
+    <script>
+
+  
+       window.AudioContext = window.AudioContext || window.webkitAudioContext;
+             // Set up an audio element to feed the ambisonic source audio feed.
+             const audioElement = document.createElement('video');
+            // const audioElement =  document.querySelector('video');
+             const audioContext = new AudioContext();
+       
+
+
+             //audioElement.src = URL.createObjectURL();
+              if (window.MediaSource) {
+              var mediaSource = new MediaSource();
+              audioElement.src = URL.createObjectURL(mediaSource, { 'type' : 'audio/ogg; codecs=opus' });// var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+             // audioSource = audioContext.createMediaStreamSource(audioElement );
+             //mediaSource.addEventListener('sourceopen', sourceOpen);
+             // console.log(audioElement.src);
+              } else {
+              console.log('The Media Source Extensions API is not supported.');
+              }
+             // var audioSource = audioContext.createMediaStreamSource(audioElement.src);
+         
+             // Create AudioContext, MediaElementSourceNode and FOARenderer.
+             //BabylonJS need audio source
+             
+              //audioContext.resume();
+         
+             const audioElementSource = audioContext.createMediaElementSource(audioElement);
+             const foaRenderer = Omnitone.createFOARenderer(audioContext);
+             // audioElement.src ="https://nerdits.com/audio/asfos.mp3";
+      
+       
+             const hoaRenderer = Omnitone.createFOARenderer(audioContext);
+             // Make connection and start play. Hook up the user input for the playback.
+            
+             foaRenderer.initialize().then(function() {
+             audioElementSource.connect(foaRenderer.input);
+             foaRenderer.output.connect(audioContext.destination);
+             //console.log(audioElementSource);
+             });
+
+             const canvas = document.getElementById('renderCanvas');
+             const engine = new BABYLON.Engine(canvas, true);
+
+             const createScene = function (videoElem) {
+             const scene = new BABYLON.Scene(engine);
+
+            // https://babylonjsguide.github.io/basics/Cameras#arc-rotate-camera
+            const camera = new BABYLON.ArcRotateCamera('MainCamera', -1, 0, 1, new BABYLON.Vector3(0, 0, 0), scene);
+
+            camera.setTarget(BABYLON.Vector3.Zero());
+            camera.attachControl(canvas, true);
+
+            const light = new BABYLON.HemisphericLight('Light', new BABYLON.Vector3(0, 0, 0), scene);
+
+            const videoDome = new BABYLON.VideoDome(
+                'VideoDome',
+                videoElem,
+                {},
+                scene
+             );
+
+            return scene;
+       
+          };
+
+          var videoElem = document.getElementById('video');
+          const scene = createScene(videoElem);
+
+          const playPauseVideoDome = () => {
+            const videoDome = scene.getNodeByName('VideoDome');
+            const video = videoDome.videoTexture.video;
+            video.paused ? video.play() : video.pause();
+            renderer.setRotationMatrix4(camera.scene);
+           alert(renderer.setRotationMatrix4);
+
+          }
+
+        scene.onKeyboardObservable.add(e => {
+            switch (e.event.type) {
+                case 'keydown':
+                    if (e.event.key === ' ') {
+                        playPauseVideoDome();
+                    }
+                    break;
+            }
+        })
+
+        const vrHelper = scene.createDefaultVRExperience();
+        vrHelper.enableInteractions();
+
+        vrHelper.onControllerMeshLoaded.add((webVRController) => {
+            var controllerMesh = webVRController.mesh;
+            webVRController.onTriggerStateChangedObservable.add(() => {
+              playPauseVideoDome();
+            });
+        });     
+
+        engine.runRenderLoop(() => {
+            scene.render();
+                });
+    
+        window.addEventListener('resize', function () {
+            engine.resize();
+     
+        });
+
+        const playVideoDome = () => {
+            const videoDome = scene.getNodeByName('VideoDome')
+            videoDome.videoTexture.video.play()
+           renderer.setRotationMatrix4(scene.videoDome); 
+        }
+
+        var box = BABYLON.Mesh.CreateBox("crate", 2, scene);
+        box.material = new BABYLON.StandardMaterial("Mat", scene);
+        //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
+        box.position = new BABYLON.Vector3(0, 1, 0);
+
+      
+
+      //CAN babylonJS read BLob URL unreadable
+     var b = document.querySelector("audio");
+     var clicked = false;
+     var chunks = [];
+     var ac = new AudioContext();
+     var osc = ac.createOscillator();
+     var dest = ac.createMediaStreamDestination();
+     var mediaRecorder = new MediaRecorder(dest.stream , { bitsPerSecond: 32000 });
+     /*
+      osc.connect(dest);  
+
+          b.addEventListener("click", function(e) {
+       if (!clicked) {
+           mediaRecorder.start();
+           osc.start(0);
+           e.target.textContent = "Stop recording";
+           clicked = true;
+         } else {
+           mediaRecorder.stop();
+           osc.stop(0);
+           e.target.disabled = true;
+         }
+     });
+     */
+       mediaRecorder.ondataavailable = function(evt) {
+       // push each chunk (blobs) in an array
+       chunks.push(evt.data);
+     };
+        var blob = new Blob(chunks, { 'type' : 'audio/ogg' });
+        let link = (window.URL || window.webkitURL).createObjectURL(blob);
+        //document.querySelector("audio").src = .createObjectURL(blob);
+       // window.audio = new Audio();
+       // window.audio.src = blob;
+       // window.audio.controls = true;
+        //document.body.appendChild(window.audio);
+        //link.href = blob;
+        //link.download = streamName || 'output.ogg';
+        //link.get = streamName || 'output.ogg';
+        console.log(link);
+        
+
+        
+        //Get the audioContext Source to BJS
+        var audioStream = new BABYLON.Sound("Live", link, scene, null, {
+
+        //var audioStream = new BABYLON.Sound("ColdPlay", "https://nerdits.com/audio/asfos.mp3", scene, null, {
+        //var audioStream = new BABYLON.Sound("Audio", audioElement.src, scene, null, {
+        spatialSound: true,
+        streaming: true,
+        loop: true,
+        autoplay: true,
+        useCustomAttenuation: true
+        });
+    // Sound will now follow the box mesh position
+       audioStream.setDirectionalCone(90, 180, 0);
+       audioStream.setLocalDirectionToMesh(new BABYLON.Vector3(1, 0, 0));
+
+       audioStream.attachToMesh(box);
+
+       //voice = new BABYLON.Sound("voice", mediaStream, scene, null, { spatialSound: true, streaming: true });
+       //voice.attachToMesh(mesh);
+  
+       //var ctx = voice._inputAudioNode.context;
+       //var gainNode = voice.getSoundGain();
+       //voice._streamingSource.connect(voice._soundPanner);
+       //voice._soundPanner.connect(gainNode);
+      // gainNode.connect(ctx.destination);
+ 
+
+    </script>
+
+</body>
+
+</html>
