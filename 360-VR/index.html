@@ -52,9 +52,11 @@
              //audioElement.src = URL.createObjectURL();
               if (window.MediaSource) {
               var mediaSource = new MediaSource();
-              audioElement.src = URL.createObjectURL(mediaSource, { 'type' : 'audio/ogg; codecs=opus' });// var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-             // audioSource = audioContext.createMediaStreamSource(audioElement );
-             //mediaSource.addEventListener('sourceopen', sourceOpen);
+              audioElement.src = URL.createObjectURL(mediaSource, { 'type' : 'audio/ogg; codecs=opus' });
+	      //TEST to render audio from BLOB	      
+              // var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+              // audioSource = audioContext.createMediaStreamSource(audioElement );
+              //mediaSource.addEventListener('sourceopen', sourceOpen);
              // console.log(audioElement.src);
               } else {
               console.log('The Media Source Extensions API is not supported.');
@@ -64,7 +66,7 @@
              // Create AudioContext, MediaElementSourceNode and FOARenderer.
              //BabylonJS need audio source
              
-              //audioContext.resume();
+             //audioContext.resume();
          
              const audioElementSource = audioContext.createMediaElementSource(audioElement);
              const foaRenderer = Omnitone.createFOARenderer(audioContext);
