@@ -2,10 +2,10 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/4.0.3/babylon.js"></script>
-		<link type="text/css" rel="stylesheet" href="css/viewer.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/4.0.3/babylon.js"></script>
+<link type="text/css" rel="stylesheet" href="css/viewer.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src='https://cdn.jsdelivr.net/npm/@millicast/sdk@latest/dist/millicast.umd.js'></script>
 
@@ -36,7 +36,8 @@
     </audio>
      <button id="audioBtn" class="btn-audio"  onClick="toggleMute()" type="button"></button>
      <script src="js/viewer.js"></script>
-     <script src="js/omnitone.js"></script>
+    <!-- test attached live audio 	
+     <script src="js/omnitone.js"></script> -->
     <script>
 
   
@@ -188,6 +189,7 @@
      };
         var blob = new Blob(chunks, { 'type' : 'audio/ogg' });
         let link = (window.URL || window.webkitURL).createObjectURL(blob);
+	//BABYLON TEST    
         //document.querySelector("audio").src = .createObjectURL(blob);
        // window.audio = new Audio();
        // window.audio.src = blob;
