@@ -15,7 +15,7 @@ Line 2
 let accountId = 'YOURID'; //let accountId ADD YOUR ACCOUNT ID HERE 
 Replace YOURID with the ID of your millicast account.
 
-https://YOURSITE.com/player/?id=YOURSTREAMNAME
+https://YOURSITE.com/player/?streamid=AccountId/StreamName
 
 You can start streaming with OBS or the built in publisher.
 
