@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html >
 
 <head>
     <meta charset="UTF-8">
@@ -31,9 +31,9 @@
 <body>
     <canvas id="renderCanvas"></canvas>
     <video id="video" disablePictureInPicture controlsList="nodownload" playsinline controls autoplay muted  ></video>
-    <audio id="audio"  playsinline autoplay  ></audio>
+  <!--   <audio id="audio"  playsinline autoplay  ></audio>
     <source id="source" src="" type="audio/ogg"/>
-    </audio>
+    </audio>   -->
      <button id="audioBtn" class="btn-audio"  onClick="toggleMute()" type="button"></button>
      <script src="js/viewer.js"></script>
 <script>
@@ -126,8 +126,8 @@
         //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
         box.position = new BABYLON.Vector3(0, 1, 0);
 
-      
-
+    
+   
       //CAN BABYLON.JS read BLob
      var b = document.querySelector("video");
      var clicked = false;
@@ -155,17 +155,18 @@
        // push each chunk (blobs) in an array
        chunks.push(evt.data);
        };
-        //var blob = new Blob(chunks, { 'type' : 'audio/wav' });
+       // let blob = new Blob(chunks, { 'type' : 'audio/wav' });
         let  link   = URL.createObjectURL(new Blob([], {type:'video/webm'}));
         console.log(link);
-        
+       
+
         //Get the audioContext Source to BJS
         //BLOB LINK
-        var audioStream = new BABYLON.Sound("Live", link, scene, null, {
-       //   var audioStream = new BABYLON.Sound("Live", scene, null, {
+       var audioStream = new BABYLON.Sound("Live", link, scene, null, {
+         //var audioStream = new BABYLON.Sound("Live.wav", scene, null, {
         //MESH WILL WORK IF MP3 or Wav
-       //  var audioStream = new BABYLON.Sound("ColdPlay", "https://nerdits.com/audio/asfos.mp3", scene, null, {
-       // var audioStream = new BABYLON.Sound("Audio", audioElement.src, scene, null, {
+        //var audioStream = new BABYLON.Sound("ColdPlay", "https://nerdits.com/audio/asfos.mp3", scene, null, {
+    //  var audioStream = new BABYLON.Sound("Audio", audioElement.src, scene, null, {
         spatialSound: true,
         streaming: true,
         loop: true,
