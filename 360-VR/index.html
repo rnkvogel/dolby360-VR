@@ -31,14 +31,11 @@
 <body>
     <canvas id="renderCanvas"></canvas>
     <video id="video" disablePictureInPicture controlsList="nodownload" playsinline controls autoplay muted  ></video>
-  <!--   <audio id="audio"  playsinline autoplay  ></audio>
-    <source id="source" src="" type="audio/ogg"/>
-    </audio>   -->
      <button id="audioBtn" class="btn-audio"  onClick="toggleMute()" type="button"></button>
      <script src="js/viewer.js"></script>
 <script>
 
-       window.AudioContext = window.AudioContext || window.webkitAudioContext;
+              window.AudioContext = window.AudioContext || window.webkitAudioContext;
              // Set up an audio element to feed the ambisonic source audio feed.
               const audioElement = document.createElement('video');
               const audioContext = new AudioContext();
@@ -48,8 +45,8 @@
                } else {
               console.log('The Media Source Extensions API is not supported.');
               }
-               //BabylonJS need new audio source
-              const audioElementSource = audioContext.createMediaElementSource(audioElement);
+             //BabylonJS need new audio source 
+             const audioElementSource = audioContext.createMediaElementSource(audioElement);
              const canvas = document.getElementById('renderCanvas');
              const engine = new BABYLON.Engine(canvas, true);
 
@@ -75,18 +72,17 @@
        
           };
 
-          var videoElem = document.getElementById('video');
-          const scene = createScene(videoElem);
-           const playPauseVideoDome = () => {
-            const videoDome = scene.getNodeByName('VideoDome');
-            const video = videoDome.videoTexture.video;
-            video.paused ? video.play() : video.pause();
-            renderer.setRotationMatrix4(camera.scene);
-           alert(renderer.setRotationMatrix4);
+         var videoElem = document.getElementById('video');
+         const scene = createScene(videoElem);
+         const playPauseVideoDome = () => {
+         const videoDome = scene.getNodeByName('VideoDome');
+         const video = videoDome.videoTexture.video;
+         video.paused ? video.play() : video.pause();
+         renderer.setRotationMatrix4(camera.scene);
+         alert(renderer.setRotationMatrix4);
 
           }
-
-        scene.onKeyboardObservable.add(e => {
+       scene.onKeyboardObservable.add(e => {
             switch (e.event.type) {
                 case 'keydown':
                     if (e.event.key === ' ') {
@@ -99,7 +95,7 @@
         const vrHelper = scene.createDefaultVRExperience();
         vrHelper.enableInteractions();
 
-        vrHelper.onControllerMeshLoaded.add((webVRController) => {
+           vrHelper.onControllerMeshLoaded.add((webVRController) => {
             var controllerMesh = webVRController.mesh;
             webVRController.onTriggerStateChangedObservable.add(() => {
               playPauseVideoDome();
@@ -126,60 +122,21 @@
         //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
         box.position = new BABYLON.Vector3(0, 1, 0);
 
-    
-   
-      //CAN BABYLON.JS read BLob
-     var b = document.querySelector("video");
-     var clicked = false;
-     var chunks = [];
-     var ac = new AudioContext();
-     var osc = ac.createOscillator();
-     var dest = ac.createMediaStreamDestination();
-     var mediaRecorder = new MediaRecorder(dest.stream , { bitsPerSecond: 32000 });
-     
-      osc.connect(dest);  
-       b.addEventListener("click", function(e) {
-       if (!clicked) {
-           mediaRecorder.start();
-           osc.start(0);
-           e.target.textContent = "Stop recording";
-           clicked = true;
-         } else {
-           mediaRecorder.stop();
-           osc.stop(0);
-           e.target.disabled = true;
-         }
-     });
-     
-        mediaRecorder.ondataavailable = function(evt) {
-       // push each chunk (blobs) in an array
-       chunks.push(evt.data);
-       };
-       // let blob = new Blob(chunks, { 'type' : 'audio/wav' });
-        let  link   = URL.createObjectURL(new Blob([], {type:'video/webm'}));
-        console.log(link);
-       
-
-        //Get the audioContext Source to BJS
-        //BLOB LINK
-       var audioStream = new BABYLON.Sound("Live", link, scene, null, {
-         //var audioStream = new BABYLON.Sound("Live.wav", scene, null, {
-        //MESH WILL WORK IF MP3 or Wav
+       //audioContext needs to be a valid wave or MP3 source to attach
+         var audioStream = new BABYLON.Sound("Live", audioContext.ogg, scene, null, {
+        //MESH WILL WORK IF MP3 or Wav Comment above and uncomment below for example
         //var audioStream = new BABYLON.Sound("ColdPlay", "https://nerdits.com/audio/asfos.mp3", scene, null, {
-    //  var audioStream = new BABYLON.Sound("Audio", audioElement.src, scene, null, {
         spatialSound: true,
         streaming: true,
         loop: true,
         autoplay: true,
         useCustomAttenuation: true
         });
-    // Sound will now follow the box mesh position
+       // Sound will now follow the box mesh position
        audioStream.setDirectionalCone(90, 180, 0);
        audioStream.setLocalDirectionToMesh(new BABYLON.Vector3(1, 0, 0));
 
        audioStream.attachToMesh(box);
 </script>
-
 </body>
-
 </html>
