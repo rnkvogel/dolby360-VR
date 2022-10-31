@@ -12,7 +12,7 @@ html{
 h1,h3{
 color: #ffffff
 }
-.btn-audio {
+.btn-player {
   background-color: #04AA6D;
   border: none;
   color: white;
@@ -43,13 +43,13 @@ var streamName = document.getElementById("streamTxt").value;
  <H1>Dolby Realtime Streaming 360/VR Player</H1>
 <h3>Please input our stream name and account id information. Secure token is not enabled in demo.</h3>
 <div id="form" class="account-data">
-<input id="tokenTxt" class="base-input" type="text" value="" placeholder="Secure Token" />
+<input id="tokenTxt" class="base-input" type="text" value="" placeholder="Secure Token/Not required" />
 <input id="viewTxt" class="base-input" type="text" value="" placeholder="Account Id"/>
 <input id="streamTxt" class="base-input ml-10 mr-10" type="text" value="" placeholder="Stream Name"/>
  </div>
  
 <div>
-<button id="startPlayer" class="btn-audio"  onClick="startPlayer()" type="button">Start Player</button>
+<button id="startPlayer" class="btn-player"  onClick="startPlayer()" type="button">Start Player</button>
 </div>
 
 </body>
