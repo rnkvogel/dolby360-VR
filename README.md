@@ -1,7 +1,8 @@
 # dolby360-VR
 Dolby.io live steam to 360/VR using Babylon JS
 
-Using 360 video or a live 360 camera with a Dolby Real time stream to  create a real time experience for a large audience.
+Using 360 video or a live 360 camera with a Dolby Real time stream to create a real time experience for a large audience.
+
 Go to https://dolby.io/ and create your account.
 
 DEMO
