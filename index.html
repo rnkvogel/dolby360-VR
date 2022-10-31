@@ -2,11 +2,29 @@
 <html>
 <head>
 <title>Dolby Realtime 360 VR Player based on Babylon JS</title>
- <style>
-  background: url(dolby2.png);
-  background-repeat: no-repeat;
-  background-size: auto;
+<style>
+html{
+  background-image: url('dolby2.png');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;}
+h1,h3{
+color: #ffffff
+}
+.btn-audio {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
 </style>
+
 <script>
 let params     = new URLSearchParams(document.location.search.substring(1));
 // SubscribingToken - placed here for ease of test	
@@ -20,7 +38,7 @@ var streamName = document.getElementById("streamTxt").value;
  }
 
 </script>
-
+ </head>
 <body>
  <H1>Dolby Realtime Streaming 360/VR Player</H1>
  Please input our stream name and account id information. Secure token is not enabled in demo.
